@@ -60,29 +60,62 @@ public class Grafo {
     public Grafo ConjuntoDominanteMinimo(){
         Set<Vertice> visitados = new HashSet<>();
         Grafo conjuntoD =new Grafo();
-        Queue<Vertice> pila = new PriorityQueue<>((v1, v2) -> {
-            int ganancia1 = calcularGanancia(v1, visitados);
-            int ganancia2 = calcularGanancia(v2, visitados);
-            return Integer.compare(ganancia1, ganancia2);});
 
-        pila.addAll(vertices.values());
+        Queue<Candidato> pila = new PriorityQueue<>();
+        for (Vertice v : vertices.values()) {
+            pila.add(new Candidato(v, 1 + v.getVecinos().size()));
+        }
+
         while(visitados.size()!=vertices.size()){
-            Vertice verticePila=pila.poll(); //reordeno
-            pila.add(verticePila);
-            verticePila=pila.poll();
+            Vertice verticePila = Objects.requireNonNull(pila.poll()).vertice; //reordeno
+            int gananciaReal = calcularGanancia(verticePila,visitados);
+            if(gananciaReal==0){continue;}
+            if(pila.isEmpty()||gananciaReal>=calcularGanancia(pila.peek().vertice,visitados)){
             conjuntoD.agregarVertice(verticePila);
             visitados.addAll(verticePila.getVecinos());
+            visitados.add(verticePila);}
+            else{
+            pila.add(new Candidato(verticePila,gananciaReal));}
         }
 
 return conjuntoD;
     }
 
     private int calcularGanancia(Vertice v1, Set<Vertice> visitados) {
-        int ganancia = 0;
+
+        int ganancia=(visitados.contains(v1))? (ganancia=0):(ganancia=1);
         for (Vertice vecino : v1.getVecinos()) {
             if (!visitados.contains(vecino)) {
                 ganancia++;  //contar solo vecinos NO visitados
             }
     }
     return ganancia;}
+
+    private static class Candidato implements Comparable<Candidato>{
+        Vertice vertice;
+        int gananciaEstimada;
+
+        Candidato(Vertice vertice, int gananciaEstimada) {
+            this.vertice = vertice;
+            this.gananciaEstimada = gananciaEstimada;
+        }
+
+        @Override
+        public int compareTo(Candidato o) {
+            return Integer.compare(this.gananciaEstimada,o.gananciaEstimada);
+        }
+    }
+
+    @Override
+    public String toString() {
+        List<Vertice> vertices = new ArrayList<>(this.vertices.values());
+        StringBuffer impresion=new StringBuffer();
+        int numeroV=1;
+        for(Vertice v:vertices)
+        {
+
+            impresion.append("vertice n° "+numeroV+"="+v+"\n");
+        }
+        return impresion.toString();
+    }
 }
