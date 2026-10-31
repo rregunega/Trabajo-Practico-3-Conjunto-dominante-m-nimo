@@ -25,7 +25,7 @@ public class Grafo {
         aristas.add(new Arista(a, b));
     }
 
-    public Map<Integer, Vertice> getVertices() { return Collections.unmodifiableMap(vertices); }
+    public Set<Vertice> getVertices() { return Set.copyOf(vertices.values());  }
     public List<Arista> getAristas() { return Collections.unmodifiableList(aristas); }
 
     public Set<Vertice> getVecinos(Vertice v) {

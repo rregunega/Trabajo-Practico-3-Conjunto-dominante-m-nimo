@@ -13,7 +13,7 @@ public class GrafoTest {
 
     private Grafo g;
     private Vertice a, b, c ,d,e,f,h,i,j,k;
-
+    @Before
     public void setUp() {
         g = new Grafo();
         a = new Vertice(200);
@@ -23,38 +23,8 @@ public class GrafoTest {
         g.agregarVertice(b);
         g.agregarVertice(c);
     }
-    @Before
-    public void setUp2() {
-        g = new Grafo();
-        a = new Vertice(200);
-        b = new Vertice(0);
-        c = new Vertice(20);
-        d = new Vertice(10);
-        e = new Vertice(15);
-        f = new Vertice(30);
-        h = new Vertice(60);
-        i = new Vertice(90);
-        j = new Vertice(100);
-        k = new Vertice(3);
-        g.agregarVertice(a);
-        g.agregarVertice(b);
-        g.agregarVertice(c);
-        g.agregarVertice(d);
-        g.agregarVertice(e);
-        g.agregarVertice(f);
-        g.agregarVertice(h);
-        g.agregarVertice(i);
-        g.agregarVertice(j);
-        g.agregarVertice(k);
-    }
-    public void setUpAristas() {
-        g.agregarArista(a, c);
-        g.agregarArista(a, k);
-        g.agregarArista(b, h);
-        g.agregarArista(b, d);
-        g.agregarArista(i, e);
-        g.agregarArista(j, f);
-    }
+
+
     @Test
     public void agregarArista() {
         g.agregarArista(a, b);
@@ -136,9 +106,5 @@ public class GrafoTest {
         g.getVecinos(a).add(b);
     }
 
-    @Test()
-    public void obtenerConjuntoMinimo(){
-        setUpAristas();
-        System.out.println(g.ConjuntoDominanteMinimo());
-    }
+
 }
